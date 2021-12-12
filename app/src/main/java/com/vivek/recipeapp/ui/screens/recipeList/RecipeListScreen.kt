@@ -13,6 +13,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
 import com.vivek.recipeapp.ui.components.RecipeCard
 import com.vivek.recipeapp.ui.components.SearchAppBar
+import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
+import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -36,7 +38,7 @@ fun RecipeListScreen(
             query = query,
             onQueryChanged = { viewModel.onQueryChanged(query = it) },
             onExecuteSearch = {
-                viewModel.newSearch()
+                viewModel.onTriggerEvent(NewSearchEvent)
                 keyboardController?.hide()
                 focusManager.clearFocus()
             },
@@ -60,7 +62,7 @@ fun RecipeListScreen(
                         viewModel.onChangeRecipeListScrollPosition(position = index)
 
                         if ((index + 1) >= (page * PAGE_SIZE) && !isLoading) {
-                            viewModel.nextPageSearch()
+                            viewModel.onTriggerEvent(NextPageSearchEvent)
                         }
                     }
                 }
