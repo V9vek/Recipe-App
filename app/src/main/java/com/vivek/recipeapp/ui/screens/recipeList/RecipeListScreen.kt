@@ -21,7 +21,7 @@ import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchE
 @Composable
 fun RecipeListScreen(
     viewModel: RecipeListViewModel = hiltViewModel(),
-    onRecipeClicked: () -> Unit
+    onRecipeClicked: (id: Int) -> Unit
 ) {
     val recipes = viewModel.recipes.value
     val query = viewModel.query.value
@@ -58,7 +58,16 @@ fun RecipeListScreen(
             } else {
                 LazyColumn {
                     itemsIndexed(items = recipes) { index, recipe ->
-                        RecipeCard(recipe = recipe, onClick = {})
+                        RecipeCard(
+                            recipe = recipe,
+                            onClick = {
+                                if (recipe.id != null) {
+                                    onRecipeClicked(recipe.id)
+                                } else {
+                                    // TODO: Show SnackBar
+                                }
+                            }
+                        )
                         viewModel.onChangeRecipeListScrollPosition(position = index)
 
                         if ((index + 1) >= (page * PAGE_SIZE) && !isLoading) {
