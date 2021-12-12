@@ -10,6 +10,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val PAGE_SIZE = 30
+
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val repository: RecipeRepository,
@@ -25,6 +27,12 @@ class RecipeListViewModel @Inject constructor(
     val isLoading = mutableStateOf(false)
 
     var categoryScrollPosition = 0
+
+    // Paging setup
+
+    val page = mutableStateOf(1)
+
+    private var recipeListScrollPosition = 0
 
     init {
         newSearch()
@@ -47,6 +55,44 @@ class RecipeListViewModel @Inject constructor(
         isLoading.value = false
     }
 
+    fun nextPageSearch() = viewModelScope.launch {
+        // prevent duplicate events of searching, due to recomposition happening too quickly
+        if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+            isLoading.value = true
+            incrementPage()
+
+            delay(1000)     // because api is fast
+
+            if (page.value > 1) {
+                val result = repository.search(
+                    token = token,
+                    page = page.value,
+                    query = query.value
+                )
+                appendRecipes(recipes = result)
+            }
+
+            isLoading.value = false
+        }
+    }
+
+    /**
+     * Append new recipes to the current list of recipes
+     */
+    private fun appendRecipes(recipes: List<Recipe>) {
+        val current = this.recipes.value.toMutableList()
+        current.addAll(recipes)
+        this.recipes.value = current.toList()
+    }
+
+    private fun incrementPage() {
+        page.value = page.value + 1
+    }
+
+    fun onChangeRecipeListScrollPosition(position: Int) {
+        recipeListScrollPosition = position
+    }
+
     fun onQueryChanged(query: String) {
         this.query.value = query
     }
@@ -65,11 +111,15 @@ class RecipeListViewModel @Inject constructor(
         selectedCategory.value = null
     }
 
-    // resetting scroll to top always when new search is done
-    // and clearing the selected chip if there is custom search through searchBar
-
+    /**
+     * resetting scroll to top always when new search is done
+     * and clearing the selected chip if there is custom search through searchBar
+     */
     private fun resetSearchState() {
         recipes.value = listOf()
+        page.value = 1
+        onChangeRecipeListScrollPosition(position = 0)
+
         if (selectedCategory.value?.value != query.value)
             clearSelectedCategory()
     }

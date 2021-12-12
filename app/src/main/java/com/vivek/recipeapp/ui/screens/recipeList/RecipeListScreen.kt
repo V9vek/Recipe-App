@@ -25,6 +25,7 @@ fun RecipeListScreen(
     val query = viewModel.query.value
     val selectedCategory = viewModel.selectedCategory.value
     val isLoading = viewModel.isLoading.value
+    val page = viewModel.page.value
 
     // controlling soft keyboard and the cursor focus
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -50,9 +51,18 @@ fun RecipeListScreen(
         )
 
         Box(modifier = Modifier) {
-            LazyColumn {
-                itemsIndexed(items = recipes) { index, recipe ->
-                    RecipeCard(recipe = recipe, onClick = {})
+            if (isLoading && recipes.isEmpty()) {
+                // TODO: Show Shimmer Animation
+            } else {
+                LazyColumn {
+                    itemsIndexed(items = recipes) { index, recipe ->
+                        RecipeCard(recipe = recipe, onClick = {})
+                        viewModel.onChangeRecipeListScrollPosition(position = index)
+
+                        if ((index + 1) >= (page * PAGE_SIZE) && !isLoading) {
+                            viewModel.nextPageSearch()
+                        }
+                    }
                 }
             }
 
