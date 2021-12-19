@@ -1,24 +1,29 @@
 package com.vivek.recipeapp.ui.screens.recipeList
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.vivek.recipeapp.ui.components.AnimatedHeartButton
-import com.vivek.recipeapp.ui.components.HeartButtonState.ACTIVE
-import com.vivek.recipeapp.ui.components.HeartButtonState.IDLE
+import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
+import com.vivek.recipeapp.ui.components.DefaultSnackBar
+import com.vivek.recipeapp.ui.components.RecipeCard
 import com.vivek.recipeapp.ui.components.SearchAppBar
+import com.vivek.recipeapp.ui.components.ShimmerAnimation
 import com.vivek.recipeapp.ui.components.utils.SnackBarController
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
+import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
 import kotlinx.coroutines.launch
 
 
@@ -43,9 +48,6 @@ fun RecipeListScreen(
     val scaffoldState = rememberScaffoldState()
 
     val snackBarController = SnackBarController(scope = scope)
-
-    // animation
-    var buttonState by remember { mutableStateOf(IDLE) }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -89,18 +91,18 @@ fun RecipeListScreen(
             )
         }
     ) {
-        Column {
-//            PulsingAnimation()
-            AnimatedHeartButton(
-                buttonState = buttonState,
-                onToggle = { buttonState = if (buttonState == IDLE) ACTIVE else IDLE }
-            )
-        }
-
-        /*
         Box(modifier = Modifier.fillMaxSize()) {
             if (isLoading && recipes.isEmpty()) {
                 // TODO: Show Shimmer Animation
+                ShimmerAnimation(
+                    cardHeight = 250.dp,
+                    colors = listOf(
+                        Color.LightGray.copy(alpha = 0.9f),
+                        Color.LightGray.copy(alpha = 0.2f),
+                        Color.LightGray.copy(alpha = 0.9f),
+                    ),
+                    gradientWidth = 350f
+                )
             } else {
                 LazyColumn {
                     itemsIndexed(items = recipes) { index, recipe ->
@@ -132,7 +134,6 @@ fun RecipeListScreen(
             )
 
         }
-        */
     }
 }
 
