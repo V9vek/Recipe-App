@@ -21,6 +21,7 @@ fun loadImage(
 ): Bitmap? {
     var bitmap by mutableStateOf<Bitmap?>(null)
 
+    // show default image while image loads from network
     Glide.with(LocalContext.current)
         .asBitmap()
         .load(defaultImage)
@@ -32,6 +33,7 @@ fun loadImage(
             override fun onLoadCleared(placeholder: Drawable?) {}
         })
 
+    // get network image
     Glide.with(LocalContext.current)
         .asBitmap()
         .load(url)
