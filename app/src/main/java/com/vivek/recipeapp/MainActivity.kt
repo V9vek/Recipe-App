@@ -5,6 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.vivek.recipeapp.navigation.RecipeAppNavigation
 import com.vivek.recipeapp.ui.theme.RecipeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,11 +19,30 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            RecipeAppTheme {
+            var isDarkTheme by remember { mutableStateOf(false) }
+
+            RecipeAppTheme(darkTheme = isDarkTheme) {
                 Surface(color = MaterialTheme.colors.background) {
-                    RecipeAppNavigation()
+                    RecipeAppNavigation(
+                        onToggleTheme = { isDarkTheme = !isDarkTheme }
+                    )
                 }
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

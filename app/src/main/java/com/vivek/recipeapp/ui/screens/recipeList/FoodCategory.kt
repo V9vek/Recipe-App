@@ -9,7 +9,7 @@ enum class FoodCategory(val value: String) {
     MILK("Milk"),
     VEGAN("Vegan"),
     PIZZA("Pizza"),
-    DONUT("Donut")
+    DONUT("Donut"),
 }
 
 fun getAllFoodCategories(): List<FoodCategory> {

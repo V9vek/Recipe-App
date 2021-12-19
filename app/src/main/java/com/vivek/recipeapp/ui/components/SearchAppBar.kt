@@ -13,18 +13,18 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DarkMode
+import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,14 +41,15 @@ fun SearchAppBar(
     categoryScrollPosition: Int,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
-    onChangeCategoryScrollPosition: (Int) -> Unit
+    onChangeCategoryScrollPosition: (Int) -> Unit,
+    onToggleTheme: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.White,
+        color = MaterialTheme.colors.surface,
         elevation = 8.dp
     ) {
         Column {
@@ -82,8 +83,11 @@ fun SearchAppBar(
                     textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
                 )
 
-                IconButton(onClick = { /*TODO: switch themes and icon*/ }) {
-                    Icon(imageVector = Icons.Rounded.DarkMode, contentDescription = "")
+                IconButton(onClick = { onToggleTheme() }) {
+                    Icon(
+                        imageVector = Icons.Rounded.LightMode,
+                        contentDescription = ""
+                    )
                 }
             }
 
@@ -96,6 +100,7 @@ fun SearchAppBar(
                 scope.launch {
                     scrollState.scrollTo(categoryScrollPosition)
                 }
+
                 for (category in getAllFoodCategories()) {
                     FoodCategoryChip(
                         category = category.value,

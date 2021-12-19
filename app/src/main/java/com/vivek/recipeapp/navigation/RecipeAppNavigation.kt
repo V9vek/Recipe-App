@@ -12,7 +12,9 @@ import com.vivek.recipeapp.ui.screens.recipe.RecipeScreen
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListScreen
 
 @Composable
-fun RecipeAppNavigation() {
+fun RecipeAppNavigation(
+    onToggleTheme: () -> Unit
+) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = RecipeList.route) {
@@ -20,7 +22,8 @@ fun RecipeAppNavigation() {
             RecipeListScreen(
                 onRecipeClicked = { recipeId ->
                     navController.navigate(route = "${Recipe.route}/$recipeId")
-                }
+                },
+                onToggleTheme = onToggleTheme
             )
         }
 
