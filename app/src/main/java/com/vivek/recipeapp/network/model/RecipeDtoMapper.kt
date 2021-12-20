@@ -2,6 +2,7 @@ package com.vivek.recipeapp.network.model
 
 import com.vivek.recipeapp.domain.model.Recipe
 import com.vivek.recipeapp.domain.util.DomainMapper
+import com.vivek.recipeapp.utils.DateUtil
 import javax.inject.Inject
 
 class RecipeDtoMapper @Inject constructor() : DomainMapper<RecipeDto, Recipe> {
@@ -13,11 +14,9 @@ class RecipeDtoMapper @Inject constructor() : DomainMapper<RecipeDto, Recipe> {
             featuredImage = model.featuredImage,
             rating = model.rating,
             sourceUrl = model.sourceUrl,
-            description = model.description,
-            cookingInstructions = model.cookingInstructions,
             ingredients = model.ingredients ?: listOf(),
-            dateAdded = model.dateAdded,
-            dateUpdated = model.dateUpdated
+            dateAdded = DateUtil.longToDate(model.longDateAdded),
+            dateUpdated = DateUtil.longToDate(model.longDateUpdated)
         )
     }
 
@@ -29,11 +28,9 @@ class RecipeDtoMapper @Inject constructor() : DomainMapper<RecipeDto, Recipe> {
             featuredImage = domainModel.featuredImage,
             rating = domainModel.rating,
             sourceUrl = domainModel.sourceUrl,
-            description = domainModel.description,
-            cookingInstructions = domainModel.cookingInstructions,
             ingredients = domainModel.ingredients,
-            dateAdded = domainModel.dateAdded,
-            dateUpdated = domainModel.dateUpdated
+            longDateAdded = DateUtil.dateToLong(domainModel.dateAdded),
+            longDateUpdated = DateUtil.dateToLong(domainModel.dateUpdated)
         )
     }
 

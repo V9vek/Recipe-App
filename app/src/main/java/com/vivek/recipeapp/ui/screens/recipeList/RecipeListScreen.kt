@@ -19,8 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
 import com.vivek.recipeapp.ui.components.DefaultSnackBar
 import com.vivek.recipeapp.ui.components.RecipeCard
-import com.vivek.recipeapp.ui.components.SearchAppBar
 import com.vivek.recipeapp.ui.components.RecipeListShimmerAnimation
+import com.vivek.recipeapp.ui.components.SearchAppBar
 import com.vivek.recipeapp.ui.components.utils.SnackBarController
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
@@ -108,13 +108,7 @@ fun RecipeListScreen(
                     itemsIndexed(items = recipes) { index, recipe ->
                         RecipeCard(
                             recipe = recipe,
-                            onClick = {
-                                if (recipe.id != null) {
-                                    onRecipeClicked(recipe.id)
-                                } else {
-                                    // TODO: Show SnackBar
-                                }
-                            }
+                            onClick = { onRecipeClicked(recipe.id) }
                         )
                         viewModel.onChangeRecipeListScrollPosition(position = index)
 

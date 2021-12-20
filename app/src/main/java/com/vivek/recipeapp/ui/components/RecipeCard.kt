@@ -28,7 +28,6 @@ fun RecipeCard(
     recipe: Recipe,
     onClick: () -> Unit
 ) {
-
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
@@ -38,42 +37,39 @@ fun RecipeCard(
         elevation = 8.dp
     ) {
         Column {
-            recipe.featuredImage?.let { url ->
-                val image = loadImage(url = url, defaultImage = DEFAULT_RECIPE_IMAGE)
-                image?.let { img ->
-                    Image(
-                        bitmap = img.asImageBitmap(),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(225.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
-
-            recipe.title?.let { title ->
-                Row(
+            val image = loadImage(url = recipe.featuredImage, defaultImage = DEFAULT_RECIPE_IMAGE)
+            image?.let { img ->
+                Image(
+                    bitmap = img.asImageBitmap(),
+                    contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 12.dp, horizontal = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = title,
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.h5
-                    )
-                    Text(
-                        text = recipe.rating.toString(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(Alignment.End),
-                        style = MaterialTheme.typography.h6
-                    )
-                }
+                        .height(225.dp),
+                    contentScale = ContentScale.Crop
+                )
+
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp, horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = recipe.title,
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                        .wrapContentWidth(Alignment.Start),
+                    style = MaterialTheme.typography.h5
+                )
+                Text(
+                    text = recipe.rating.toString(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentWidth(Alignment.End),
+                    style = MaterialTheme.typography.h6
+                )
             }
         }
     }

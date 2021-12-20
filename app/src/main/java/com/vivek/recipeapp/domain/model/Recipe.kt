@@ -1,17 +1,17 @@
 package com.vivek.recipeapp.domain.model
 
+import java.util.*
+
 // Domain Model
 
 data class Recipe(
-    val id: Int? = null,
-    val title: String? = null,
-    val publisher: String? = null,
-    val featuredImage: String? = null,
-    val rating: Int? = null,
-    val sourceUrl: String? = null,
-    val description: String? = null,
-    val cookingInstructions: String? = null,
+    val id: Int,
+    val title: String,
+    val publisher: String,
+    val featuredImage: String,
+    val rating: Int,
+    val sourceUrl: String,
     val ingredients: List<String> = listOf(),
-    val dateAdded: String? = null,
-    val dateUpdated: String? = null,
+    val dateAdded: Date,
+    val dateUpdated: Date,
 )

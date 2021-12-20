@@ -44,7 +44,7 @@ data class RecipeEntity(
      * The date this recipe was "added + refreshed" in the cache.
      */
     @ColumnInfo(name = "date_refreshed")
-    var dateRefreshed: Long
+    var dateCached: Long
 )
 
 

@@ -33,18 +33,16 @@ fun RecipeView(
             .verticalScroll(scrollState)
             .fillMaxWidth()
     ) {
-        recipe.featuredImage?.let { url ->
-            val image = loadImage(url = url, defaultImage = DEFAULT_RECIPE_IMAGE)
-            image?.let { img ->
-                Image(
-                    bitmap = img.asImageBitmap(),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .requiredHeight(IMAGE_HEIGHT.dp),
-                    contentScale = ContentScale.Crop
-                )
-            }
+        val image = loadImage(url = recipe.featuredImage, defaultImage = DEFAULT_RECIPE_IMAGE)
+        image?.let { img ->
+            Image(
+                bitmap = img.asImageBitmap(),
+                contentDescription = "",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(IMAGE_HEIGHT.dp),
+                contentScale = ContentScale.Crop
+            )
         }
 
         Column(
@@ -53,36 +51,32 @@ fun RecipeView(
                 .padding(8.dp)
         ) {
             // Top Row
-            recipe.title?.let { title ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = title,
-                        modifier = Modifier.fillMaxWidth(0.85f),
-                        style = MaterialTheme.typography.h6
-                    )
-
-                    val rating = recipe.rating.toString()
-                    Text(
-                        text = rating,
-                        style = MaterialTheme.typography.h6
-                    )
-                }
-            }
-
-            recipe.publisher?.let { publisher ->
-                val updated = recipe.dateUpdated
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    text = if (updated != null) "Updated $updated by $publisher" else "By $publisher",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    style = MaterialTheme.typography.subtitle1
+                    text = recipe.title,
+                    modifier = Modifier.fillMaxWidth(0.85f),
+                    style = MaterialTheme.typography.h6
+                )
+
+                val rating = recipe.rating.toString()
+                Text(
+                    text = rating,
+                    style = MaterialTheme.typography.h6
                 )
             }
+
+            val updated = recipe.dateUpdated
+            Text(
+                text = "Updated $updated by ${recipe.publisher}",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                style = MaterialTheme.typography.subtitle1
+            )
 
             for (ingredient in recipe.ingredients) {
                 Text(
