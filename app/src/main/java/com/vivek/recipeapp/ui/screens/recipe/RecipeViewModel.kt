@@ -5,8 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vivek.recipeapp.domain.model.Recipe
-import com.vivek.recipeapp.navigation.RecipeEvent
-import com.vivek.recipeapp.navigation.RecipeEvent.GetRecipeEvent
+import com.vivek.recipeapp.ui.screens.recipe.RecipeEvent.GetRecipeEvent
 import com.vivek.recipeapp.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

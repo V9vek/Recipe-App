@@ -1,4 +1,4 @@
-package com.vivek.recipeapp.navigation
+package com.vivek.recipeapp.ui.screens.recipe
 
 sealed class RecipeEvent {
 

@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.vivek.recipeapp.navigation.RecipeEvent.GetRecipeEvent
+import com.vivek.recipeapp.ui.screens.recipe.RecipeEvent.GetRecipeEvent
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
 import com.vivek.recipeapp.ui.components.IMAGE_HEIGHT
 import com.vivek.recipeapp.ui.components.RecipeShimmerAnimation

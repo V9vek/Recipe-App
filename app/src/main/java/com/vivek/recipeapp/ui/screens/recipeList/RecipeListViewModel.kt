@@ -10,7 +10,6 @@ import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.RestoreStateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
