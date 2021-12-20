@@ -1,21 +1,19 @@
 package com.vivek.recipeapp.ui.screens.recipe
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vivek.recipeapp.navigation.RecipeEvent.GetRecipeEvent
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
+import com.vivek.recipeapp.ui.components.IMAGE_HEIGHT
+import com.vivek.recipeapp.ui.components.RecipeShimmerAnimation
 import com.vivek.recipeapp.ui.components.RecipeView
+
 
 @Composable
 fun RecipeScreen(
@@ -31,7 +29,15 @@ fun RecipeScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (isLoading && recipe == null) {
-            // TODO: Show Shimmer Animation
+            RecipeShimmerAnimation(
+                cardHeight = IMAGE_HEIGHT.dp,
+                colors = listOf(
+                    Color.LightGray.copy(alpha = 0.9f),
+                    Color.LightGray.copy(alpha = 0.2f),
+                    Color.LightGray.copy(alpha = 0.9f)
+                ),
+                gradientWidth = 350f
+            )
         } else {
             recipe?.let { RecipeView(recipe = it) }
         }

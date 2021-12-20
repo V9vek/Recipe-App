@@ -63,7 +63,7 @@ fun ShimmerRecipeCardItem(
 }
 
 @Composable
-fun ShimmerAnimation(
+fun RecipeListShimmerAnimation(
     padding: Dp = 16.dp,
     cardHeight: Dp,
     colors: List<Color>,

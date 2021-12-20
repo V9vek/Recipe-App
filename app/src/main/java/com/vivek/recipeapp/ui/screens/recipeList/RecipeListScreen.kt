@@ -20,7 +20,7 @@ import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
 import com.vivek.recipeapp.ui.components.DefaultSnackBar
 import com.vivek.recipeapp.ui.components.RecipeCard
 import com.vivek.recipeapp.ui.components.SearchAppBar
-import com.vivek.recipeapp.ui.components.ShimmerAnimation
+import com.vivek.recipeapp.ui.components.RecipeListShimmerAnimation
 import com.vivek.recipeapp.ui.components.utils.SnackBarController
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
@@ -94,7 +94,7 @@ fun RecipeListScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             if (isLoading && recipes.isEmpty()) {
                 // TODO: Show Shimmer Animation
-                ShimmerAnimation(
+                RecipeListShimmerAnimation(
                     cardHeight = 250.dp,
                     colors = listOf(
                         Color.LightGray.copy(alpha = 0.9f),
