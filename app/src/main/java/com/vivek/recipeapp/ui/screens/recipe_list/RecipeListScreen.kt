@@ -1,4 +1,4 @@
-package com.vivek.recipeapp.ui.screens.recipeList
+package com.vivek.recipeapp.ui.screens.recipe_list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,8 +22,8 @@ import com.vivek.recipeapp.ui.components.RecipeCard
 import com.vivek.recipeapp.ui.components.RecipeListShimmerAnimation
 import com.vivek.recipeapp.ui.components.SearchAppBar
 import com.vivek.recipeapp.ui.components.utils.SnackBarController
-import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
-import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
+import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
+import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
 import kotlinx.coroutines.launch
 
 

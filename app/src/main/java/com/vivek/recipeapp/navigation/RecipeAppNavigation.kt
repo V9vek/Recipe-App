@@ -9,7 +9,7 @@ import androidx.navigation.navArgument
 import com.vivek.recipeapp.navigation.ScreenRouting.Recipe
 import com.vivek.recipeapp.navigation.ScreenRouting.RecipeList
 import com.vivek.recipeapp.ui.screens.recipe.RecipeScreen
-import com.vivek.recipeapp.ui.screens.recipeList.RecipeListScreen
+import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListScreen
 
 @Composable
 fun RecipeAppNavigation(

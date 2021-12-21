@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -29,8 +28,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.vivek.recipeapp.ui.screens.recipeList.FoodCategory
-import com.vivek.recipeapp.ui.screens.recipeList.getAllFoodCategories
+import com.vivek.recipeapp.ui.screens.recipe_list.FoodCategory
+import com.vivek.recipeapp.ui.screens.recipe_list.getAllFoodCategories
 import kotlinx.coroutines.launch
 
 @Composable

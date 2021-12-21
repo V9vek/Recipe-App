@@ -36,6 +36,14 @@ class RecipeEntityMapper @Inject constructor() : DomainMapper<RecipeEntity, Reci
         )
     }
 
+    fun toDomainModelList(initial: List<RecipeEntity>): List<Recipe> {
+        return initial.map { mapToDomainModel(it) }
+    }
+
+    fun fromDomainModelList(initial: List<Recipe>): List<RecipeEntity> {
+        return initial.map { mapFromDomainModel(it) }
+    }
+
     private fun convertIngredientListToString(ingredients: List<String>): String {
         val ingredientsString = StringBuilder()
         for (ingredient in ingredients) {

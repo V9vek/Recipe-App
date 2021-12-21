@@ -1,4 +1,4 @@
-package com.vivek.recipeapp.ui.screens.recipeList
+package com.vivek.recipeapp.ui.screens.recipe_list
 
 sealed class RecipeListEvent {
 

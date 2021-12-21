@@ -1,16 +1,19 @@
-package com.vivek.recipeapp.ui.screens.recipeList
+package com.vivek.recipeapp.ui.screens.recipe_list
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vivek.recipeapp.domain.model.Recipe
+import com.vivek.recipeapp.interactors.recipe_list.RestoreRecipes
+import com.vivek.recipeapp.interactors.recipe_list.SearchRecipes
 import com.vivek.recipeapp.repository.RecipeRepository
-import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NewSearchEvent
-import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.NextPageSearchEvent
-import com.vivek.recipeapp.ui.screens.recipeList.RecipeListEvent.RestoreStateEvent
+import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
+import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
+import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.RestoreStateEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +26,8 @@ const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
-    private val repository: RecipeRepository,
+    private val searchRecipes: SearchRecipes,
+    private val restoreRecipes: RestoreRecipes,
     private val token: String,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -89,62 +93,63 @@ class RecipeListViewModel @Inject constructor(
     }
 
     // use case 1
-    private suspend fun newSearch() {
-        isLoading.value = true
-
+    private fun newSearch() {
         resetSearchState()
 
-        delay(1000)
+        searchRecipes.execute(token = token, page = page.value, query = query.value)
+            .onEach { dataState ->
+                isLoading.value = dataState.loading
 
-        val result = repository.search(
-            token = token,
-            page = 1,
-            query = query.value
-        )
-        recipes.value = result
+                dataState.data?.let { list ->
+                    recipes.value = list
+                }
 
-        isLoading.value = false
+                dataState.error?.let { error ->
+                    println("ERROR: newSearch: $error")
+                    // TODO: handle error
+                }
+            }.launchIn(viewModelScope)
     }
 
     // use case 2
-    private suspend fun nextPageSearch() {
+    private fun nextPageSearch() {
         // prevent duplicate events of searching, due to recomposition happening too quickly
         if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
-            isLoading.value = true
             incrementPage()
 
-            delay(1000)     // because api is fast
-
             if (page.value > 1) {
-                val result = repository.search(
-                    token = token,
-                    page = page.value,
-                    query = query.value
-                )
-                appendRecipes(recipes = result)
-            }
+                searchRecipes.execute(token = token, page = page.value, query = query.value)
+                    .onEach { dataState ->
+                        isLoading.value = dataState.loading
 
-            isLoading.value = false
+                        dataState.data?.let { list ->
+                            appendRecipes(recipes = list)
+                        }
+
+                        dataState.error?.let { error ->
+                            println("ERROR: nextPageSearch: $error")
+                            // TODO: handle error
+                        }
+                    }.launchIn(viewModelScope)
+            }
         }
     }
 
     // use case 3
-    private suspend fun restoreState() {
-        isLoading.value = true
+    private fun restoreState() {
+        restoreRecipes.execute(page = page.value, query = query.value)
+            .onEach { dataState ->
+                isLoading.value = dataState.loading
 
-        val results = mutableListOf<Recipe>()
+                dataState.data?.let { list ->
+                    recipes.value = list
+                }
 
-        for (p in 1..page.value) {
-            val result = repository.search(
-                token = token,
-                page = p,
-                query = query.value
-            )
-            results.addAll(result)
-        }
-
-        recipes.value = results
-        isLoading.value = false
+                dataState.error?.let { error ->
+                    println("ERROR: restoreState: $error")
+                    // TODO: handle error
+                }
+            }.launchIn(viewModelScope)
     }
 
     /**
