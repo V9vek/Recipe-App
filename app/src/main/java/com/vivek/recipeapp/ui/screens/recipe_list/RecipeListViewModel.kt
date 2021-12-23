@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.vivek.recipeapp.domain.model.Recipe
 import com.vivek.recipeapp.interactors.recipe_list.RestoreRecipes
 import com.vivek.recipeapp.interactors.recipe_list.SearchRecipes
-import com.vivek.recipeapp.repository.RecipeRepository
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.RestoreStateEvent

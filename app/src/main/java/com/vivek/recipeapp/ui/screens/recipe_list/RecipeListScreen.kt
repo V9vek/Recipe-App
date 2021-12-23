@@ -7,7 +7,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -18,6 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
 import com.vivek.recipeapp.ui.components.DefaultSnackBar
+import com.vivek.recipeapp.ui.components.GenericDialog
+import com.vivek.recipeapp.ui.components.GenericDialogInfo
+import com.vivek.recipeapp.ui.components.NegativeAction
+import com.vivek.recipeapp.ui.components.PositiveAction
 import com.vivek.recipeapp.ui.components.RecipeCard
 import com.vivek.recipeapp.ui.components.RecipeListShimmerAnimation
 import com.vivek.recipeapp.ui.components.SearchAppBar
@@ -48,6 +56,7 @@ fun RecipeListScreen(
     val scaffoldState = rememberScaffoldState()
 
     val snackBarController = SnackBarController(scope = scope)
+    var isShowing by remember { mutableStateOf(true) }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -127,6 +136,33 @@ fun RecipeListScreen(
                 onDismiss = { scaffoldState.snackbarHostState.currentSnackbarData?.dismiss() }
             )
 
+            if (isShowing) {
+                val dialogInfo = GenericDialogInfo.Builder()
+                    .title("Error")
+                    .onDismiss { isShowing = false }
+                    .description("Hey some description!")
+                    .positiveAction(
+                        PositiveAction(
+                            positiveBtnText = "Ok",
+                            onPositiveAction = { isShowing = false }
+                        )
+                    )
+                    .negativeAction(
+                        NegativeAction(
+                            negativeBtnText = "Cancel",
+                            onNegativeAction = { isShowing = false }
+                        )
+                    )
+                    .build()
+
+                GenericDialog(
+                    title = dialogInfo.title,
+                    description = dialogInfo.description,
+                    positiveAction = dialogInfo.positiveAction,
+                    negativeAction = dialogInfo.negativeAction,
+                    onDismiss = dialogInfo.onDismiss
+                )
+            }
         }
     }
 }

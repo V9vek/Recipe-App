@@ -30,6 +30,10 @@ class SearchRecipes(
             emit(DataState.loading())
             delay(1000)          // fake delay
 
+            if (query == "error") {
+                throw Exception("Query Error!")
+            }
+
             // fetch from network
             val recipes = getRecipesFromNetwork(token, page, query)
 

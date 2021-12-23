@@ -47,7 +47,6 @@ fun RecipeCard(
                         .height(225.dp),
                     contentScale = ContentScale.Crop
                 )
-
             }
 
             Row(

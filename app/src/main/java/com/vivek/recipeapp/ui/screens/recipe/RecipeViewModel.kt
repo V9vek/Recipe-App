@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vivek.recipeapp.domain.model.Recipe
 import com.vivek.recipeapp.interactors.recipe.GetRecipe
-import com.vivek.recipeapp.repository.RecipeRepository
 import com.vivek.recipeapp.ui.screens.recipe.RecipeEvent.GetRecipeEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -19,7 +18,6 @@ const val STATE_KEY_RECIPE_ID = "recipe.state.recipe_id"
 @HiltViewModel
 class RecipeViewModel @Inject constructor(
     private val getRecipe: GetRecipe,
-    private val repository: RecipeRepository,
     private val token: String,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
