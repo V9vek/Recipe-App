@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.vivek.recipeapp.domain.model.Recipe
 import com.vivek.recipeapp.interactors.recipe.GetRecipe
 import com.vivek.recipeapp.ui.screens.recipe.RecipeEvent.GetRecipeEvent
+import com.vivek.recipeapp.ui.util.DialogQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -25,6 +26,9 @@ class RecipeViewModel @Inject constructor(
     val recipe = mutableStateOf<Recipe?>(null)
 
     val isLoading = mutableStateOf(false)
+
+    // Dialog Queue
+    val dialogQueue = DialogQueue()
 
     init {
         // retrieving state key-value after process death
@@ -61,7 +65,7 @@ class RecipeViewModel @Inject constructor(
 
                 dataState.error?.let { error ->
                     println("ERROR: getRecipe: $error")
-                    // TODO: handle error
+                    dialogQueue.appendErrorMessage(title = "Error", description = error)
                 }
             }.launchIn(viewModelScope)
     }

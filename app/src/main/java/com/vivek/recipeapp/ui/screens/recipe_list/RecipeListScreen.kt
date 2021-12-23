@@ -32,7 +32,9 @@ import com.vivek.recipeapp.ui.components.SearchAppBar
 import com.vivek.recipeapp.ui.components.utils.SnackBarController
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
+import com.vivek.recipeapp.ui.util.DialogQueue
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -47,6 +49,7 @@ fun RecipeListScreen(
     val selectedCategory = viewModel.selectedCategory.value
     val isLoading = viewModel.isLoading.value
     val page = viewModel.page.value
+    val dialogQueue = viewModel.dialogQueue
 
     // controlling soft keyboard and the cursor focus
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -136,34 +139,21 @@ fun RecipeListScreen(
                 onDismiss = { scaffoldState.snackbarHostState.currentSnackbarData?.dismiss() }
             )
 
-            if (isShowing) {
-                val dialogInfo = GenericDialogInfo.Builder()
-                    .title("Error")
-                    .onDismiss { isShowing = false }
-                    .description("Hey some description!")
-                    .positiveAction(
-                        PositiveAction(
-                            positiveBtnText = "Ok",
-                            onPositiveAction = { isShowing = false }
-                        )
-                    )
-                    .negativeAction(
-                        NegativeAction(
-                            negativeBtnText = "Cancel",
-                            onNegativeAction = { isShowing = false }
-                        )
-                    )
-                    .build()
-
-                GenericDialog(
-                    title = dialogInfo.title,
-                    description = dialogInfo.description,
-                    positiveAction = dialogInfo.positiveAction,
-                    negativeAction = dialogInfo.negativeAction,
-                    onDismiss = dialogInfo.onDismiss
-                )
-            }
+            ProcessDialogQueue(queue = dialogQueue.queue.value)
         }
+    }
+}
+
+@Composable
+fun ProcessDialogQueue(queue: Queue<GenericDialogInfo>) {
+    queue.peek()?.let { dialogInfo ->
+        GenericDialog(
+            title = dialogInfo.title,
+            onDismiss = dialogInfo.onDismiss,
+            description = dialogInfo.description,
+            positiveAction = dialogInfo.positiveAction,
+            negativeAction = dialogInfo.negativeAction
+        )
     }
 }
 

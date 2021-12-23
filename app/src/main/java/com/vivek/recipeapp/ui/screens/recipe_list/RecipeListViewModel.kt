@@ -10,6 +10,7 @@ import com.vivek.recipeapp.interactors.recipe_list.SearchRecipes
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.RestoreStateEvent
+import com.vivek.recipeapp.ui.util.DialogQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -42,10 +43,12 @@ class RecipeListViewModel @Inject constructor(
     var categoryScrollPosition = 0
 
     // Paging setup
-
     val page = mutableStateOf(1)
 
     private var recipeListScrollPosition = 0
+
+    // Dialog Queue
+    val dialogQueue = DialogQueue()
 
     init {
         // getting the values from savedStateHandle
@@ -105,7 +108,7 @@ class RecipeListViewModel @Inject constructor(
 
                 dataState.error?.let { error ->
                     println("ERROR: newSearch: $error")
-                    // TODO: handle error
+                    dialogQueue.appendErrorMessage(title = "Error", description = error)
                 }
             }.launchIn(viewModelScope)
     }
@@ -127,7 +130,7 @@ class RecipeListViewModel @Inject constructor(
 
                         dataState.error?.let { error ->
                             println("ERROR: nextPageSearch: $error")
-                            // TODO: handle error
+                            dialogQueue.appendErrorMessage(title = "Error", description = error)
                         }
                     }.launchIn(viewModelScope)
             }
@@ -146,7 +149,7 @@ class RecipeListViewModel @Inject constructor(
 
                 dataState.error?.let { error ->
                     println("ERROR: restoreState: $error")
-                    // TODO: handle error
+                    dialogQueue.appendErrorMessage(title = "Error", description = error)
                 }
             }.launchIn(viewModelScope)
     }

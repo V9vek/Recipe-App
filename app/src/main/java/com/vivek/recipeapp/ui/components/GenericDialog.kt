@@ -22,7 +22,6 @@ fun GenericDialog(
     negativeAction: NegativeAction? = null,
     onDismiss: () -> Unit
 ) {
-
     AlertDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,

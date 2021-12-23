@@ -1,6 +1,7 @@
 package com.vivek.recipeapp.ui.screens.recipe_list
 
 enum class FoodCategory(val value: String) {
+    ERROR("error"),
     CHICKEN("Chicken"),
     BEEF("Beef"),
     SOUP("Soup"),

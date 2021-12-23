@@ -30,6 +30,7 @@ class SearchRecipes(
             emit(DataState.loading())
             delay(1000)          // fake delay
 
+            // force error for testing
             if (query == "error") {
                 throw Exception("Query Error!")
             }
