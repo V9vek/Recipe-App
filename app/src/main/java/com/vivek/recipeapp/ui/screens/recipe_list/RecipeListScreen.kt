@@ -7,11 +7,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -21,6 +17,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
+import com.vivek.recipeapp.ui.components.ConnectivityMonitor
 import com.vivek.recipeapp.ui.components.DefaultSnackBar
 import com.vivek.recipeapp.ui.components.GenericDialog
 import com.vivek.recipeapp.ui.components.GenericDialogInfo
@@ -39,7 +36,8 @@ import java.util.*
 fun RecipeListScreen(
     viewModel: RecipeListViewModel = hiltViewModel(),
     onRecipeClicked: (id: Int) -> Unit,
-    onToggleTheme: () -> Unit
+    onToggleTheme: () -> Unit,
+    isNetworkAvailable: Boolean
 ) {
     val recipes = viewModel.recipes.value
     val query = viewModel.query.value
@@ -136,6 +134,8 @@ fun RecipeListScreen(
             )
 
             ProcessDialogQueue(queue = dialogQueue.queue.value)
+
+            ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
         }
     }
 }

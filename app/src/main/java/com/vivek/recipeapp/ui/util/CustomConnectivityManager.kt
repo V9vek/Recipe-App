@@ -6,6 +6,9 @@ import com.vivek.recipeapp.BaseApplication
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// This CustomConnectivityManager is singleton because it will be instantiated only once, in the Main Activity
+// and that object will be injected wherever we want
+
 @Singleton
 class CustomConnectivityManager @Inject constructor(
     application: BaseApplication

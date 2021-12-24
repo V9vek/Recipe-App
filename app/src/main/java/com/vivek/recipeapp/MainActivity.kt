@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
             RecipeAppTheme(darkTheme = isDarkTheme) {
                 Surface(color = MaterialTheme.colors.background) {
                     RecipeAppNavigation(
+                        isNetworkAvailable = customConnectivityManager.isNetworkAvailable.value,
                         onToggleTheme = { isDarkTheme = !isDarkTheme }
                     )
                 }

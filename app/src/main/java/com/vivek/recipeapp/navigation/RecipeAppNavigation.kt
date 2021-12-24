@@ -13,6 +13,7 @@ import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListScreen
 
 @Composable
 fun RecipeAppNavigation(
+    isNetworkAvailable: Boolean,
     onToggleTheme: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -23,7 +24,8 @@ fun RecipeAppNavigation(
                 onRecipeClicked = { recipeId ->
                     navController.navigate(route = "${Recipe.route}/$recipeId")
                 },
-                onToggleTheme = onToggleTheme
+                onToggleTheme = onToggleTheme,
+                isNetworkAvailable = isNetworkAvailable
             )
         }
 
@@ -32,7 +34,10 @@ fun RecipeAppNavigation(
             arguments = listOf(navArgument("recipeId") { type = NavType.IntType })
         ) { backStackEntry ->
             backStackEntry.arguments?.getInt("recipeId")?.let { recipeId ->
-                RecipeScreen(recipeId = recipeId)
+                RecipeScreen(
+                    recipeId = recipeId,
+                    isNetworkAvailable = isNetworkAvailable
+                )
             }
         }
     }

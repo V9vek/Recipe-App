@@ -10,6 +10,7 @@ import com.vivek.recipeapp.interactors.recipe_list.SearchRecipes
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.RestoreStateEvent
+import com.vivek.recipeapp.ui.util.CustomConnectivityManager
 import com.vivek.recipeapp.ui.util.DialogQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -29,7 +30,8 @@ class RecipeListViewModel @Inject constructor(
     private val searchRecipes: SearchRecipes,
     private val restoreRecipes: RestoreRecipes,
     private val token: String,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val customConnectivityManager: CustomConnectivityManager
 ) : ViewModel() {
 
     val recipes = mutableStateOf<List<Recipe>>(listOf())
@@ -98,19 +100,23 @@ class RecipeListViewModel @Inject constructor(
     private fun newSearch() {
         resetSearchState()
 
-        searchRecipes.execute(token = token, page = page.value, query = query.value)
-            .onEach { dataState ->
-                isLoading.value = dataState.loading
+        searchRecipes.execute(
+            token = token,
+            page = page.value,
+            query = query.value,
+            isNetworkAvailable = customConnectivityManager.isNetworkAvailable.value
+        ).onEach { dataState ->
+            isLoading.value = dataState.loading
 
-                dataState.data?.let { list ->
-                    recipes.value = list
-                }
+            dataState.data?.let { list ->
+                recipes.value = list
+            }
 
-                dataState.error?.let { error ->
-                    println("ERROR: newSearch: $error")
-                    dialogQueue.appendErrorMessage(title = "Error", description = error)
-                }
-            }.launchIn(viewModelScope)
+            dataState.error?.let { error ->
+                println("ERROR: newSearch: $error")
+                dialogQueue.appendErrorMessage(title = "Error", description = error)
+            }
+        }.launchIn(viewModelScope)
     }
 
     // use case 2
@@ -120,19 +126,23 @@ class RecipeListViewModel @Inject constructor(
             incrementPage()
 
             if (page.value > 1) {
-                searchRecipes.execute(token = token, page = page.value, query = query.value)
-                    .onEach { dataState ->
-                        isLoading.value = dataState.loading
+                searchRecipes.execute(
+                    token = token,
+                    page = page.value,
+                    query = query.value,
+                    isNetworkAvailable = customConnectivityManager.isNetworkAvailable.value
+                ).onEach { dataState ->
+                    isLoading.value = dataState.loading
 
-                        dataState.data?.let { list ->
-                            appendRecipes(recipes = list)
-                        }
+                    dataState.data?.let { list ->
+                        appendRecipes(recipes = list)
+                    }
 
-                        dataState.error?.let { error ->
-                            println("ERROR: nextPageSearch: $error")
-                            dialogQueue.appendErrorMessage(title = "Error", description = error)
-                        }
-                    }.launchIn(viewModelScope)
+                    dataState.error?.let { error ->
+                        println("ERROR: nextPageSearch: $error")
+                        dialogQueue.appendErrorMessage(title = "Error", description = error)
+                    }
+                }.launchIn(viewModelScope)
             }
         }
     }

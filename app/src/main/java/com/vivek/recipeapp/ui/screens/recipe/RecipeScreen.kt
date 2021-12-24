@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
+import com.vivek.recipeapp.ui.components.ConnectivityMonitor
 import com.vivek.recipeapp.ui.components.IMAGE_HEIGHT
 import com.vivek.recipeapp.ui.components.RecipeShimmerAnimation
 import com.vivek.recipeapp.ui.components.RecipeView
@@ -19,7 +20,8 @@ import com.vivek.recipeapp.ui.screens.recipe_list.ProcessDialogQueue
 @Composable
 fun RecipeScreen(
     viewModel: RecipeViewModel = hiltViewModel(),
-    recipeId: Int
+    recipeId: Int,
+    isNetworkAvailable: Boolean,
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.onTriggerEvent(event = GetRecipeEvent(recipeId = recipeId))
@@ -47,6 +49,8 @@ fun RecipeScreen(
         CircularIndeterminateProgressBar(isDisplayed = isLoading)
 
         ProcessDialogQueue(queue = dialogQueue.queue.value)
+
+        ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
     }
 }
 

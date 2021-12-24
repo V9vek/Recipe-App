@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.vivek.recipeapp.domain.model.Recipe
 import com.vivek.recipeapp.interactors.recipe.GetRecipe
 import com.vivek.recipeapp.ui.screens.recipe.RecipeEvent.GetRecipeEvent
+import com.vivek.recipeapp.ui.util.CustomConnectivityManager
 import com.vivek.recipeapp.ui.util.DialogQueue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -20,7 +21,8 @@ const val STATE_KEY_RECIPE_ID = "recipe.state.recipe_id"
 class RecipeViewModel @Inject constructor(
     private val getRecipe: GetRecipe,
     private val token: String,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val customConnectivityManager: CustomConnectivityManager
 ) : ViewModel() {
 
     val recipe = mutableStateOf<Recipe?>(null)
@@ -54,20 +56,23 @@ class RecipeViewModel @Inject constructor(
     }
 
     private fun getRecipe(id: Int) {
-        getRecipe.execute(token = token, recipeId = id)
-            .onEach { dataState ->
-                isLoading.value = dataState.loading
+        getRecipe.execute(
+            token = token,
+            recipeId = id,
+            isNetworkAvailable = customConnectivityManager.isNetworkAvailable.value
+        ).onEach { dataState ->
+            isLoading.value = dataState.loading
 
-                dataState.data?.let { data ->
-                    recipe.value = data
-                    savedStateHandle.set(STATE_KEY_RECIPE_ID, data.id)
-                }
+            dataState.data?.let { data ->
+                recipe.value = data
+                savedStateHandle.set(STATE_KEY_RECIPE_ID, data.id)
+            }
 
-                dataState.error?.let { error ->
-                    println("ERROR: getRecipe: $error")
-                    dialogQueue.appendErrorMessage(title = "Error", description = error)
-                }
-            }.launchIn(viewModelScope)
+            dataState.error?.let { error ->
+                println("ERROR: getRecipe: $error")
+                dialogQueue.appendErrorMessage(title = "Error", description = error)
+            }
+        }.launchIn(viewModelScope)
     }
 }
 
