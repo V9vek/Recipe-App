@@ -24,15 +24,12 @@ import com.vivek.recipeapp.ui.components.CircularIndeterminateProgressBar
 import com.vivek.recipeapp.ui.components.DefaultSnackBar
 import com.vivek.recipeapp.ui.components.GenericDialog
 import com.vivek.recipeapp.ui.components.GenericDialogInfo
-import com.vivek.recipeapp.ui.components.NegativeAction
-import com.vivek.recipeapp.ui.components.PositiveAction
 import com.vivek.recipeapp.ui.components.RecipeCard
 import com.vivek.recipeapp.ui.components.RecipeListShimmerAnimation
 import com.vivek.recipeapp.ui.components.SearchAppBar
 import com.vivek.recipeapp.ui.components.utils.SnackBarController
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NewSearchEvent
 import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListEvent.NextPageSearchEvent
-import com.vivek.recipeapp.ui.util.DialogQueue
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -59,7 +56,6 @@ fun RecipeListScreen(
     val scaffoldState = rememberScaffoldState()
 
     val snackBarController = SnackBarController(scope = scope)
-    var isShowing by remember { mutableStateOf(true) }
 
     Scaffold(
         scaffoldState = scaffoldState,

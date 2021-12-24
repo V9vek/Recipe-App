@@ -11,10 +11,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.vivek.recipeapp.navigation.RecipeAppNavigation
 import com.vivek.recipeapp.ui.theme.RecipeAppTheme
+import com.vivek.recipeapp.ui.util.CustomConnectivityManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var customConnectivityManager: CustomConnectivityManager
+
+    override fun onStart() {
+        super.onStart()
+        customConnectivityManager.registerConnectionObserver(lifecycleOwner = this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        customConnectivityManager.unregisterConnectionObserver(lifecycleOwner = this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
