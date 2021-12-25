@@ -14,6 +14,7 @@ import com.vivek.recipeapp.ui.screens.recipe_list.RecipeListScreen
 @Composable
 fun RecipeAppNavigation(
     isNetworkAvailable: Boolean,
+    isDarkTheme: Boolean,
     onToggleTheme: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -25,7 +26,8 @@ fun RecipeAppNavigation(
                     navController.navigate(route = "${Recipe.route}/$recipeId")
                 },
                 onToggleTheme = onToggleTheme,
-                isNetworkAvailable = isNetworkAvailable
+                isNetworkAvailable = isNetworkAvailable,
+                isDarkTheme = isDarkTheme
             )
         }
 

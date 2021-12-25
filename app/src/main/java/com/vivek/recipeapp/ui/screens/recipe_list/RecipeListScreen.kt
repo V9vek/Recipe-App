@@ -37,7 +37,8 @@ fun RecipeListScreen(
     viewModel: RecipeListViewModel = hiltViewModel(),
     onRecipeClicked: (id: Int) -> Unit,
     onToggleTheme: () -> Unit,
-    isNetworkAvailable: Boolean
+    isNetworkAvailable: Boolean,
+    isDarkTheme: Boolean
 ) {
     val recipes = viewModel.recipes.value
     val query = viewModel.query.value
@@ -83,7 +84,6 @@ fun RecipeListScreen(
                     }
                     keyboardController?.hide()
                     focusManager.clearFocus()
-
                 },
                 categoryScrollPosition = viewModel.categoryScrollPosition,
                 selectedCategory = selectedCategory,
@@ -93,6 +93,7 @@ fun RecipeListScreen(
                 onChangeCategoryScrollPosition = { scrollStateValue ->
                     viewModel.onChangeCategoryScrollPosition(position = scrollStateValue)
                 },
+                isDarkTheme = isDarkTheme,
                 onToggleTheme = onToggleTheme,
             )
         }

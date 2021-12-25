@@ -5,10 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import com.vivek.recipeapp.datastore.SettingsDataStore
 import com.vivek.recipeapp.navigation.RecipeAppNavigation
 import com.vivek.recipeapp.ui.theme.RecipeAppTheme
 import com.vivek.recipeapp.ui.util.CustomConnectivityManager
@@ -20,6 +17,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var customConnectivityManager: CustomConnectivityManager
+
+    @Inject
+    lateinit var settingsDataStore: SettingsDataStore
 
     override fun onStart() {
         super.onStart()
@@ -35,13 +35,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            var isDarkTheme by remember { mutableStateOf(false) }
-
-            RecipeAppTheme(darkTheme = isDarkTheme) {
+            RecipeAppTheme(darkTheme = settingsDataStore.isDark.value) {
                 Surface(color = MaterialTheme.colors.background) {
                     RecipeAppNavigation(
                         isNetworkAvailable = customConnectivityManager.isNetworkAvailable.value,
-                        onToggleTheme = { isDarkTheme = !isDarkTheme }
+                        isDarkTheme = settingsDataStore.isDark.value,
+                        onToggleTheme = { settingsDataStore.toggleTheme() }
                     )
                 }
             }

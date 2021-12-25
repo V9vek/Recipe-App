@@ -31,7 +31,7 @@ class SearchRecipes(
             delay(1000)          // fake delay
 
             // force error for testing
-            if (query == "error") {
+            if (query == "error") { 
                 throw Exception("Query Error!")
             }
 
@@ -60,7 +60,6 @@ class SearchRecipes(
         }
     }
 
-    // TODO: This can throw exception if there is no network
     private suspend fun getRecipesFromNetwork(
         token: String,
         page: Int,

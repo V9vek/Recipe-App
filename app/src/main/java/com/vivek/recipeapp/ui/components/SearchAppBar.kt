@@ -17,6 +17,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ fun SearchAppBar(
     onExecuteSearch: () -> Unit,
     categoryScrollPosition: Int,
     selectedCategory: FoodCategory?,
+    isDarkTheme: Boolean,
     onSelectedCategoryChanged: (String) -> Unit,
     onChangeCategoryScrollPosition: (Int) -> Unit,
     onToggleTheme: () -> Unit,
@@ -84,7 +86,7 @@ fun SearchAppBar(
 
                 IconButton(onClick = { onToggleTheme() }) {
                     Icon(
-                        imageVector = Icons.Rounded.LightMode,
+                        imageVector = if (isDarkTheme) Icons.Rounded.LightMode else Icons.Rounded.DarkMode,
                         contentDescription = ""
                     )
                 }
