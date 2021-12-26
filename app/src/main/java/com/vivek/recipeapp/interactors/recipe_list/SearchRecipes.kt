@@ -27,8 +27,8 @@ class SearchRecipes(
         isNetworkAvailable: Boolean
     ): Flow<DataState<List<Recipe>>> = flow {
         try {
-            emit(DataState.loading())
-            delay(1000)          // fake delay
+            emit(DataState.loading())        // 1
+            delay(1000)             // fake delay
 
             // force error for testing
             if (query == "error") { 
@@ -53,7 +53,7 @@ class SearchRecipes(
 
             // emit the cached data
             val list = recipeEntityMapper.toDomainModelList(cacheResult)
-            emit(DataState.success(data = list))
+            emit(DataState.success(data = list))    // 2
 
         } catch (e: Exception) {
             emit(DataState.error(e.message ?: "Unknown Error!"))
