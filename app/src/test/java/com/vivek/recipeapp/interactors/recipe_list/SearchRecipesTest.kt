@@ -42,6 +42,7 @@ class SearchRecipesTest {
     fun setup() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
+
         baseUrl = mockWebServer.url(path = "/api/recipe/")
         recipeApiService = Retrofit.Builder()
             .baseUrl(baseUrl)
